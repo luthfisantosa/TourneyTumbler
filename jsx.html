@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Belajar Reactjs</title>
+    <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <style type="text/css">
+        .header {
+            background-color: blueviolet;
+            color: white;
+            padding: 10px;
+            font-family: Lato, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app"></div>
+
+    <script type="text/babel">
+      // membuat elemen JSX
+      let header = (
+        <header className="header">
+            <h1>LOREM IPSUM DOLOR SIT AMET</h1>
+        </header>
+        );
+
+      // render elemen ke DOM
+      ReactDOM.render(header, document.getElementById("app"));
+    </script>
+
+</body>
+
+</html>

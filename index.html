@@ -6,14 +6,15 @@
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>TOURNEYTUMBLER</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.0/dist/xlsx.full.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
       
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
 
@@ -101,11 +102,29 @@
         #backToTopBtn:hover {
             background-color: #0056b3;
         }
-
     </style>
 
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">TourneyTumbler</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Input</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <br>
     <div class="container mt-5">
         <h4 class="title">Welcome to TourneyTumbler</h4>
         <!-- <img src="assets/my-logo.png" class="float-end" width="10%" height="auto"> -->
@@ -120,7 +139,13 @@
                     <div id="formContainer" class="m-2 p-2 form-group">
                         <div class="row">
                             <div class="form-group">
-                                <button type="button" id="addField" class="btn btn-block btn-primary btn-sm float-end">+ Add Field</button>
+                                <h5>Input By File</h5>
+                                <div class="mb-3">
+                                  <input type="file" name="files[]" class="custom-file-input form-control" id="fileupload">
+                                </div>
+                                <hr>
+                                <h5>Input Manual</h5>
+                                <button type="button" id="addField" class="btn btn-block btn-success btn-sm float-end">+ Add Field</button>
                             </div>
                         </div>  
                         <div class="row">
@@ -175,9 +200,9 @@
                         <div class="col-sm-3">
                             <button type="button" id="clearDataBtn" class="btn btn-danger btn-block m-1 form-control">Clear Table</button>
                         </div>
-<!--                         <div class="col-sm-3">
+                        <div class="col-sm-3">
                             <button type="button" id="print" class="btn btn-primary btn-block m-1 form-control">Print</button>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
             </div>        
@@ -194,7 +219,6 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Section</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -203,16 +227,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- <div class="container mt-5">
-        <div class="card">
-            <div class="card-body">
-                <center>
-                    <span id="bracket"></span>
-                </center>
-            </div>
-        </div>
-    </div> -->
 
     <div class="container mt-5 mb-5">
         <div class="card bagan-peserta bg-color-1">
@@ -224,7 +238,7 @@
         </div>
     </div>
 
-    <div class="container mt-5 mb-5">
+    <div id="about" class="container mt-5 mb-5">
         <div class="card bagan-peserta">
             <div class="card-body">
                 <div>
@@ -337,8 +351,8 @@
                 // Convert the form data to a JavaScript array
                 let entry = {};
                 for (let i = 0; i < formData.length; i += 2) {
-                    entry.name = formData[i].value;
-                    entry.section = formData[i + 1].value;
+                    entry.name = formData[i].value + " - " + formData[i + 1].value;
+                    // entry.section = formData[i + 1].value;
                     dataArray.push(entry);
                     entry = {};
                 }
@@ -349,6 +363,61 @@
                 // Update DataTable with new data
                 updateDataTable(dataArray);                
             });
+
+            // <!-- Excel to JSON -->
+            var ExcelToJSON = function() {
+              this.parseExcel = function(file) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                  var data = e.target.result;
+                  var workbook = XLSX.read(data, {
+                    type: 'binary'
+                  });
+                  workbook.SheetNames.forEach(function(sheetName) {
+                    var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                    var productList = JSON.parse(JSON.stringify(XL_row_object));
+
+                    var rows = $('#dataTable tbody');
+                    var table = $('#dataTable').DataTable();
+                    let entry = {};
+                    // console.log(productList)
+                    for (i = 0; i < productList.length; i++) {
+                      var columns = Object.values(productList[i]);
+
+                      entry.name = columns[0] + " - " + columns[1];
+                      // entry.section = formData[i + 1].value;
+                      dataArray.push(entry);
+                      entry = {};
+                      // rows.append(`
+                      //               <tr>
+                      //                   <td>${columns[0]}</td>
+                      //                   <td>${columns[1]}</td>
+                      //               </tr>
+                      //           `);
+                      // Add a new row to the DataTable
+                      table.row.add([
+                            columns[0]
+                        ]).draw(false);
+                    }
+
+                  })
+                };
+                reader.onerror = function(ex) {
+                  console.log(ex);
+                };
+
+                reader.readAsBinaryString(file);
+              };
+            };
+
+            function handleFileSelect(evt) {
+              var files = evt.target.files; // FileList object
+              var xl2json = new ExcelToJSON();
+              xl2json.parseExcel(files[0]);
+            }
+
+            document.getElementById('fileupload').addEventListener('change', handleFileSelect, false);
 
             $("#randomizeTable").on("click", function() {
                 // Randomize the DataTable
@@ -390,7 +459,7 @@
 
                 // Add new rows from the dataArray
                 dataArray.forEach(entry => {
-                    dataTable.row.add([entry.name, entry.section]).draw();
+                    dataTable.row.add([entry.name]).draw();
                 });
             }
 
@@ -408,21 +477,29 @@
              $('html, body').animate({scrollTop:$(divid).position().top - 50 }, 'fast');
          }
 
-        $('#print').click(function(){
-            // Get the HTML content of the bracket container
-            var content = $('#bracket1').html();
-            // Open a new window
-            var printWindow = window.open('', '_blank');
-            // Write the HTML content into the new window
-            printWindow.document.open();
-            printWindow.document.write('<html><head><title>Bracket Tournament</title><style>@media print {body {visibility: hidden;} #bracket1, #bracket1 * {visibility: visible;}} </style></head><body>' + content + '</body></html>');
-            printWindow.document.close();
-            // Trigger the print dialog for the new window
-            printWindow.print();
+        
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#print').click(function() {
+                printDiv('bracket1');
+            });
         });
+
+        function printDiv(divID) {
+            var printContents = $('#' + divID).clone();
+            var printWindow = window.open('', '', 'width=600,height=400');
+            printWindow.document.write('<html><head><title>Print</title></head><body>');
+            printWindow.document.write('<style>@media print{body{visibility:hidden;}.print-container, .print-container *{visibility:visible;}.print-container{position:absolute;left:0;top:0;width:100%;}.print-container *{visibility:visible;}}</style>');
+            printWindow.document.write('<div class="print-container">');
+            printWindow.document.write(printContents.html());
+            printWindow.document.write('</div></body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
     </script>
 
     <script src="plugin/bracket-world/dist/assets/scripts/jquery.bracket-world.min.js"></script>
 </body>
 </html>
-
