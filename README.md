@@ -41,7 +41,7 @@ This application is developed by Luthfi Santosa, a seasoned full-stack web progr
 
 Your feedback is valuable! If you have any suggestions for improving this application or encounter any issues, please don't hesitate to reach out.
 
-For support inquiries, you can contact Luthfi Santosa at [email@example.com](mailto:email@example.com).
+For support inquiries, you can contact Luthfi Santosa at [luthfisantosa@gmail.com](mailto:luthfisantosa@gmail.com).
 
 Happy bracketing!
 
