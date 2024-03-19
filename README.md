@@ -1,4 +1,5 @@
-# Tournament Bracket Generator
+# TOURNEYTUMBLER 
+## Tournament Bracket Generator
 
 Welcome to the Tournament Bracket Generator!
 
